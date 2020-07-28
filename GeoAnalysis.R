@@ -31,6 +31,36 @@ mcnemarTestSoilType(school, semester, manual, test = geoExData$Sc2_1_soiltype_co
 mcnemarTestSoilType(school, semester, manual, test = geoExData$Sc2_2_soiltype_correct)
 mcnemarTestSoilType(school, semester, manual, test = geoExData$Sc2_3_soiltype_correct)
 
+#difference of stop depths given manual or automatic (from scene 1.1 to 2.3)
+generalTests(scene_11$manual, scene_11$stopDepth, "two.sided")
+generalTests(geoExData$Sc1_2_manual, geoExData$Sc1_2_stoppingdepth, "two.sided")
+generalTests(geoExData$Sc1_3_manual, geoExData$Sc1_3_stoppingdepth, "two.sided")
+generalTests(geoExData$Sc2_1_manual, geoExData$Sc2_1_stoppingdepth, "two.sided")
+generalTests(geoExData$Sc2_2_manual, geoExData$Sc2_2_stoppingdepth, "two.sided")
+generalTests(geoExData$Sc2_3_manual, geoExData$Sc2_3_stoppingdepth, "two.sided")
+
+#difference of cpt total given manual or automatic (from scene 1.1 to 2.3)
+generalTests(scene_11$manual, geoExData$Sc1_1_CPTtotal, "two.sided")
+generalTests(geoExData$Sc1_2_manual, geoExData$Sc1_2_CPTtotal, "two.sided")
+generalTests(geoExData$Sc1_3_manual, geoExData$Sc1_3_CPTtotal, "two.sided")
+generalTests(geoExData$Sc2_1_manual, geoExData$Sc2_1_CPTtotal, "two.sided")
+generalTests(geoExData$Sc2_2_manual, geoExData$Sc2_2_CPTtotal, "two.sided")
+generalTests(geoExData$Sc2_3_manual, geoExData$Sc2_3_CPTtotal, "two.sided")
+
+#difference of analysis total given manual or automatic (from scene 1.1 to 2.3)
+generalTests(scene_11$manual, geoExData$Sc1_1_analysistotal, "two.sided")
+generalTests(geoExData$Sc1_2_manual, geoExData$Sc1_2_analysistotal, "two.sided")
+generalTests(geoExData$Sc1_3_manual, geoExData$Sc1_3_analysistotal, "two.sided")
+generalTests(geoExData$Sc2_1_manual, geoExData$Sc2_1_analysistotal, "two.sided")
+generalTests(geoExData$Sc2_2_manual, geoExData$Sc2_2_analysistotal, "two.sided")
+generalTests(geoExData$Sc2_3_manual, geoExData$Sc2_3_analysistotal, "two.sided")
+
+###############################################################################
+#                                                                             #
+#                           FUNCTIONS                                         #
+#                                                                             #
+###############################################################################
+
 mcnemarTestCone <- function(school, semester, manual, test)
 {
   ## categorizing
@@ -70,4 +100,19 @@ mcnemarTestSoilType <- function(school, semester, manual, test)
   contingency = table(autoManual_soilCorrect$autoVsManual, autoManual_soilCorrect$test) 
   chisq.test(contingency)
   mcnemar.test(contingency)
+}
+
+generalTests <- function(manual, varToTest, alt)
+{
+  dataGivenManual <- data.frame(manual, varToTest)
+  dataGivenManual <- subset(dataGivenManual, manual != "None")
+  dataGivenManual <- dataGivenManual[dataGivenManual$varToTest != "None",]
+  auto <- dataGivenManual[dataGivenManual$manual == "TRUE",]
+  manual <- dataGivenManual[dataGivenManual$manual == "FALSE",]
+  
+  auto[] <- lapply(auto, function(x) if(is.factor(x)) factor(x) else x)
+  manual[] <- lapply(manual, function(x) if(is.factor(x)) factor(x) else x)
+  autoVector <- as.numeric(as.matrix(auto$varToTest))
+  manualVector <- as.numeric(as.matrix(manual$varToTest))
+  t.test(autoVector, manualVector, alternative = alt)
 }
