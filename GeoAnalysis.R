@@ -4,9 +4,9 @@ library(ggplot2)
 library(scales)
 library(readr)
 library(plyr)
-library(plyr)
 
 geoExData <- read.csv(file.choose())
+geoExData$
 school <- geoExData$School
 semester <- geoExData$Semester
 manual <- geoExData$Sc1_1_manual
@@ -23,7 +23,7 @@ mcnemarTestCone(school, semester, manual, test = geoExData$Sc2_1_conebreaking)
 mcnemarTestCone(school, semester, manual, test = geoExData$Sc2_2_conebreaking)
 mcnemarTestCone(school, semester, manual, test = geoExData$Sc2_3_conebreaking)
 
-# influence of manual vs automatic on cone stop depth (from scene 1.1 to 2.3)
+# influence of manual vs automatic on soil type identification (from scene 1.1 to 2.3)
 mcnemarTestSoilType(school, semester, manual, soilType_correct)
 mcnemarTestSoilType(school, semester, manual, test = geoExData$Sc1_2_soiltype_correct)
 mcnemarTestSoilType(school, semester, manual, test = geoExData$Sc1_3_soiltype_correct)
