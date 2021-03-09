@@ -204,6 +204,8 @@ blue_tb <- table(race_c_blue)
 hist(black_tb)
 
 ######################################race and gender###############################################################################
+install.packages('epiDisplay')
+library(epiDisplay)
 race_gender_cluster = data.frame(race, gender, cluster_colors)
 
 
