@@ -1,4 +1,4 @@
-COVID <- read.csv('/Users/tiagomachado/Desktop/NU Desktop/GeoExplorer_DataExtraction/GeoCovidAnalysis/COVID.csv', header = TRUE)
+COVID <- read.csv(file.choose())
 attach(COVID)
 #detach(COVID)
 
@@ -97,7 +97,6 @@ df$WLS2 <- ALL$WLS2
 df <- na.omit(df)
 df <- scale(df)
 
-
 hc3 <- agnes(df, method = "ward")
 pltree(hc3, cex = 0.6, hang = -1, main = "Dendrogram of agnes") 
 
@@ -105,10 +104,8 @@ clusterCut <- cutree(hc3, 4)
 
 dfc <- data.frame(clusterCut)
 
-
 fviz_dend(hc3, rect = TRUE)
 fviz_cluster(hc3)
-
 
 df$circle <- dat
 
@@ -119,8 +116,6 @@ img <- ggplot(df, aes(WLS1, WLS2)) +
   theme(panel.background = element_rect(fill = 'transparent', color = "pink"),
         panel.grid.major = element_line(color = 'gray'))
 img
-
-ggsave(img, filename = "/Users/tiagomachado/Desktop/cluster.png",  bg = "transparent")
 
 clusters <- hclust(dist(ALL[, 3:4]), method = 'average')
 plot(clusters)
